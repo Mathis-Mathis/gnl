@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/26 15:16:34 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/26 17:05:10 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,12 @@
 
 char	*get_next_line(int fd)
 {
+	(void)fd;
 	return (NULL);
+}
+
+
+int	main(void)
+{
+	return (0);
 }
