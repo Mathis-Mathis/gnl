@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:36:18 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 16:24:56 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 19:51:03 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ char	*ft_strdup(char const *s)
 	int		i;
 	char	*dup;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen((char *)s);
-	i = 0;
 	dup = malloc(len + 1);
 	if (!dup)
 		return (NULL);
-	if (!s)
-		return (NULL);
+	i = 0;
 	while (i < len)
 	{
 		dup[i] = s[i];

@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 19:47:23 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 19:55:41 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,17 @@ static char	*ft_read_to_stash(int fd, char *stash)
 	int		bytes_read;
 
 	bytes_read = 1;
-	while (!ft_strchr(stash, '\n') && bytes_read != 0)
+	while (!ft_strchr(stash, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
+		{
+			if (stash)
+				free(stash);
 			return (NULL);
+		}
+		if (bytes_read == 0)
+			break ;
 		buffer[bytes_read] = '\0';
 		stash = ft_strjoin(stash, buffer);
 		if (!stash)
