@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:36:18 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/27 17:41:59 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 16:24:56 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[++i])
 		res[i] = s1[i];
 	j = -1;
-	while (s1[++j])
-		res[i + j] = s1[j];
+	while (s2[++j])
+		res[i + j] = s2[j];
 	res[i + j] = '\0';
 	free(s1);
 	return (res);

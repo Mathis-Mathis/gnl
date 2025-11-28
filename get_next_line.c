@@ -6,20 +6,131 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/26 17:05:10 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:19:09 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
+
+
+static char	*ft_read_to_stash(int fd, char *stash)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	int		bytes_read;
+
+	bytes_read = 1;
+	while (!ft_strchr(stash, '\n') && bytes_read != 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
+			return (NULL);
+		buffer[bytes_read] = '\0';
+		stash = ft_strjoin(stash, buffer);
+		if(!stash)
+			return (NULL);
+	}
+	return (stash);
+}
+
+
+static char	*ft_extract_line(char *stash)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	if(!stash || stash[0] == 0)
+		return (NULL);
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\n')
+		i++;
+	line = malloc (i + 1);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+	{
+		line[i] = stash[i];
+		i++;
+	}
+	if (stash[i] == '\n')
+	{
+		line[i] = stash[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
+static char	*ft_clean_stash(char *stash)
+{
+	int		i;
+	int		j;
+	char	*new_stash;
+
+	if (!stash)
+		return (NULL);
+	i = 0;
+	while(stash[i] && stash[i] != '\n')
+		i++;
+	if (stash[i] == '\0')
+	{
+		free(stash);
+		return (NULL);
+	}
+	i++;
+	new_stash = malloc(ft_strlen(stash + i) + 1);
+	if (!new_stash)
+		return (NULL);
+	j = 0;
+	while (stash[i])
+	{
+		new_stash[j] = stash[i];
+		i++;
+		j++;
+	}
+	new_stash[j] = '\0';
+	free(stash);
+	return (new_stash);
+}
 
 char	*get_next_line(int fd)
 {
-	(void)fd;
-	return (NULL);
+	static char	*stash;
+	char		*line;
+
+	stash = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stash = ft_read_to_stash(fd, stash);
+	if (!stash)
+		return (NULL);
+	line = ft_extract_line(stash);
+	stash = ft_clean_stash(stash);
+	return (line);
 }
+
 
 
 int	main(void)
 {
+	int		fd;
+	char	*line;
+	int		i;
+
+	i = 1;
+	fd = open("test.txt", O_RDONLY);
+	if(fd == -1)
+		return (1);
+	while((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s%d", line, i);
+		free(line);
+		i++;
+	}
+	close(fd);
 	return (0);
 }
