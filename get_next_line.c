@@ -6,14 +6,12 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 18:19:09 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:25:47 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-#include <fcntl.h>
-
 
 static char	*ft_read_to_stash(int fd, char *stash)
 {
@@ -102,7 +100,6 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
-	stash = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = ft_read_to_stash(fd, stash);
@@ -113,23 +110,19 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-
-
+#include <fcntl.h>
 int	main(void)
 {
 	int		fd;
 	char	*line;
-	int		i;
 
-	i = 1;
 	fd = open("test.txt", O_RDONLY);
 	if(fd == -1)
 		return (1);
 	while((line = get_next_line(fd)) != NULL)
 	{
-		printf("%s%d", line, i);
+		printf("%s", line);
 		free(line);
-		i++;
 	}
 	close(fd);
 	return (0);
