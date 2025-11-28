@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 19:40:50 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 19:47:23 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ static char	*ft_extract_line(char *stash)
 	line = malloc (i + 1);
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (stash[i] && stash[i] != '\n')
-	{
+	i = -1;
+	while (stash[++i] && stash[i] != '\n')
 		line[i] = stash[i];
-		i++;
-	}
 	if (stash[i] == '\n')
 	{
 		line[i] = stash[i];
@@ -82,14 +79,10 @@ static char	*ft_clean_stash(char *stash)
 	new_stash = malloc(ft_strlen(stash + i) + 1);
 	if (!new_stash)
 		return (NULL);
-	j = 0;
+	j = -1;
 	while (stash[i])
-	{
-		new_stash[j] = stash[i];
-		i++;
-		j++;
-	}
-	new_stash[j] = '\0';
+		new_stash[++j] = stash[i++];
+	new_stash[j + 1] = '\0';
 	free(stash);
 	return (new_stash);
 }
@@ -125,4 +118,4 @@ int	main(void)
 	}
 	close(fd);
 	return (0);
-}
+}*/
