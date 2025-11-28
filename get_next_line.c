@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 18:25:47 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 18:58:48 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ static char	*ft_read_to_stash(int fd, char *stash)
 			return (NULL);
 		buffer[bytes_read] = '\0';
 		stash = ft_strjoin(stash, buffer);
-		if(!stash)
+		if (!stash)
 			return (NULL);
 	}
 	return (stash);
 }
-
 
 static char	*ft_extract_line(char *stash)
 {
@@ -39,7 +38,7 @@ static char	*ft_extract_line(char *stash)
 	int		i;
 
 	i = 0;
-	if(!stash || stash[0] == 0)
+	if (!stash || stash[0] == 0)
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -48,12 +47,9 @@ static char	*ft_extract_line(char *stash)
 	line = malloc (i + 1);
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (stash[i] && stash[i] != '\n')
-	{
+	i = -1;
+	while (stash[++i] && stash[i] != '\n')
 		line[i] = stash[i];
-		i++;
-	}
 	if (stash[i] == '\n')
 	{
 		line[i] = stash[i];
@@ -72,7 +68,7 @@ static char	*ft_clean_stash(char *stash)
 	if (!stash)
 		return (NULL);
 	i = 0;
-	while(stash[i] && stash[i] != '\n')
+	while (stash[i] && stash[i] != '\n')
 		i++;
 	if (stash[i] == '\0')
 	{
@@ -83,14 +79,10 @@ static char	*ft_clean_stash(char *stash)
 	new_stash = malloc(ft_strlen(stash + i) + 1);
 	if (!new_stash)
 		return (NULL);
-	j = 0;
+	j = -1;
 	while (stash[i])
-	{
-		new_stash[j] = stash[i];
-		i++;
-		j++;
-	}
-	new_stash[j] = '\0';
+		new_stash[++j] = stash[i++];
+	new_stash[++j] = '\0';
 	free(stash);
 	return (new_stash);
 }
@@ -110,7 +102,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-#include <fcntl.h>
+/*#include <fcntl.h>
 int	main(void)
 {
 	int		fd;
@@ -126,4 +118,4 @@ int	main(void)
 	}
 	close(fd);
 	return (0);
-}
+}*/
