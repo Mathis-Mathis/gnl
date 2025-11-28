@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 18:58:48 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 19:24:42 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*ft_clean_stash(char *stash)
 	if (!new_stash)
 		return (NULL);
 	j = -1;
-	while (stash[i])
+	while (stash[++i])
 		new_stash[++j] = stash[i++];
 	new_stash[++j] = '\0';
 	free(stash);
@@ -92,6 +92,7 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
+	stash = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = ft_read_to_stash(fd, stash);
@@ -107,14 +108,17 @@ int	main(void)
 {
 	int		fd;
 	char	*line;
+	int		i;
 
+	i = -1;
 	fd = open("test.txt", O_RDONLY);
 	if(fd == -1)
 		return (1);
 	while((line = get_next_line(fd)) != NULL)
 	{
-		printf("%s", line);
+		printf("%s%d", line, i);
 		free(line);
+		i++;
 	}
 	close(fd);
 	return (0);
