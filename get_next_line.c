@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 19:24:42 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/28 19:40:50 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ static char	*ft_extract_line(char *stash)
 	line = malloc (i + 1);
 	if (!line)
 		return (NULL);
-	i = -1;
-	while (stash[++i] && stash[i] != '\n')
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+	{
 		line[i] = stash[i];
+		i++;
+	}
 	if (stash[i] == '\n')
 	{
 		line[i] = stash[i];
@@ -79,10 +82,14 @@ static char	*ft_clean_stash(char *stash)
 	new_stash = malloc(ft_strlen(stash + i) + 1);
 	if (!new_stash)
 		return (NULL);
-	j = -1;
-	while (stash[++i])
-		new_stash[++j] = stash[i++];
-	new_stash[++j] = '\0';
+	j = 0;
+	while (stash[i])
+	{
+		new_stash[j] = stash[i];
+		i++;
+		j++;
+	}
+	new_stash[j] = '\0';
 	free(stash);
 	return (new_stash);
 }
@@ -92,7 +99,6 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
-	stash = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = ft_read_to_stash(fd, stash);
@@ -108,18 +114,15 @@ int	main(void)
 {
 	int		fd;
 	char	*line;
-	int		i;
 
-	i = -1;
 	fd = open("test.txt", O_RDONLY);
 	if(fd == -1)
 		return (1);
 	while((line = get_next_line(fd)) != NULL)
 	{
-		printf("%s%d", line, i);
+		printf("%s", line);
 		free(line);
-		i++;
 	}
 	close(fd);
 	return (0);
-}*/
+}
