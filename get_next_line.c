@@ -6,26 +6,28 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/28 19:55:41 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/29 11:50:28 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static char	*ft_read_to_stash(int fd, char *stash)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	int		bytes_read;
 
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
 	bytes_read = 1;
 	while (!ft_strchr(stash, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			if (stash)
-				free(stash);
+			free(buffer);
+			free(stash);
 			return (NULL);
 		}
 		if (bytes_read == 0)
@@ -33,8 +35,12 @@ static char	*ft_read_to_stash(int fd, char *stash)
 		buffer[bytes_read] = '\0';
 		stash = ft_strjoin(stash, buffer);
 		if (!stash)
+		{
+			free(buffer);
 			return (NULL);
+		}
 	}
+	free(buffer);
 	return (stash);
 }
 
@@ -109,6 +115,7 @@ char	*get_next_line(int fd)
 }
 
 /*#include <fcntl.h>
+#include <stdio.h>
 int	main(void)
 {
 	int		fd;
