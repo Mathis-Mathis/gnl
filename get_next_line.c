@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 13:57:58 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/29 11:50:28 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/29 12:56:15 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static char	*ft_read_to_stash(int fd, char *stash)
 		if (bytes_read < 0)
 		{
 			free(buffer);
-			free(stash);
+			if (stash)
+				free(stash);
 			return (NULL);
 		}
 		if (bytes_read == 0)
@@ -50,7 +51,7 @@ static char	*ft_extract_line(char *stash)
 	int		i;
 
 	i = 0;
-	if (!stash || stash[0] == 0)
+	if (!stash || stash[0] == '\0')
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -78,7 +79,10 @@ static char	*ft_clean_stash(char *stash)
 	char	*new_stash;
 
 	if (!stash)
+	{
+		free(stash);
 		return (NULL);
+	}
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -121,7 +125,7 @@ int	main(void)
 	int		fd;
 	char	*line;
 
-	fd = open("test.txt", O_RDONLY);
+	fd = open("test", O_RDONLY);
 	if(fd == -1)
 		return (1);
 	while((line = get_next_line(fd)) != NULL)
