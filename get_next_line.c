@@ -6,7 +6,7 @@
 /*   By: mmousli <mmousli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 12:57:17 by mmousli           #+#    #+#             */
-/*   Updated: 2025/11/30 13:04:19 by mmousli          ###   ########.fr       */
+/*   Updated: 2025/11/30 14:55:34 by mmousli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_extract_line(stash);
 	if (!line)
-		return (free(stash), stash = NULL, NULL);
+	{
+		stash = NULL;
+		return (free(stash), NULL);
+	}
 	stash = ft_clean_stash(stash);
 	return (line);
 }
